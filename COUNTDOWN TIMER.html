@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="datetime-local"],
+        button {
+            margin-top: 10px;
+        }
+
+        #countdown {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Countdown Timer</h1>
+        <div>
+            <label for="target-date">Enter target date and time:</label>
+            <input type="datetime-local" id="target-date" />
+            <button onclick="startCountdown()">Start Countdown</button>
+        </div>
+        <div id="countdown"></div>
+    </div>
+
+    <script>
+        function startCountdown() {
+            const targetDateInput = document.getElementById('target-date');
+            const countdownDisplay = document.getElementById('countdown');
+
+            const targetDate = new Date(targetDateInput.value);
+            const now = new Date();
+
+            if (targetDate <= now) {
+                countdownDisplay.textContent = "Please select a future date and time.";
+                return;
+            }
+
+            const countdownInterval = setInterval(() => {
+                const currentTime = new Date();
+                const timeDifference = targetDate - currentTime;
+
+                if (timeDifference <= 0) {
+                    clearInterval(countdownInterval);
+                    countdownDisplay.textContent = "Countdown expired!";
+                    return;
+                }
+
+                const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+                const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+                countdownDisplay.textContent = `Time remaining: ${hours}h ${minutes}m ${seconds}s`;
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
